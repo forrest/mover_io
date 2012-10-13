@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["ben@zittlau.ca"]
   gem.description = "Ruby gem for the Mover.io API"
   gem.summary     = "Ruby gem for the Mover.io API"
-  gem.homepage      = "http:/mover.io"
+  gem.homepage      = "http://mover.io"
 
   gem.add_dependency "rest-client"
 
