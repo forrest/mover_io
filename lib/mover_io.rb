@@ -3,7 +3,7 @@ require 'json'
 
 module MoverIO
   class Session
-    DEFAULT_HOST = 'MoverActualAPILoadBalancer-1374362217.us-east-1.elb.amazonaws.com'
+    DEFAULT_HOST = 'api.mover.io'
     DEFAULT_PROTOCOL = 'http://'
 
     def initialize(options)
@@ -14,7 +14,9 @@ module MoverIO
       @protocol =  options.has_key?(:protocol) ? options[:protocol] : DEFAULT_PROTOCOL
     end
 
-    def test
+
+    ############ CONNECTORS ################
+    def available_connectors
       response = RestClient.get "#{base_url}/connectors/available"
       if response.code == 200
         JSON.parse response.to_str
@@ -23,7 +25,6 @@ module MoverIO
       end
     end
 
-    ############ CONNECTORS ################
     def find_connector(connector_id)
       p "MoverAPI app_id=#{@app_id} app_secret=#{@app_secret}"
       response = RestClient.get "#{base_url}/connectors/#{connector_id}", {:authorization => "MoverAPI app_id=#{@app_id} app_secret=#{@app_secret}"}
