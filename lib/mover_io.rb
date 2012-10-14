@@ -55,6 +55,16 @@ module MoverIO
       end
     end
 
+    def create_collection(name, connector_id, collection_id)
+      payload = {:name => name, :parent_id => collection_id}
+      response = RestClient.post "#{base_url}/connectors/#{connector_id}/collections", payload.to_json, {:authorization => "MoverAPI app_id=#{@app_id} app_secret=#{@app_secret}", :content_type => :json}
+      if response.code == 200
+        JSON.parse response.to_str
+      else
+        false
+      end
+    end
+
     ############ TRANSFER ################
     def create_transfer(source_connector_id, source_collection_id, destination_connector_id, destination_collection_id )
       payload = {:source => {:connector_id => source_connector_id, :collection_id => source_collection_id}, :destination => {:connector_id => destination_connector_id, :collection_id => destination_collection_id}}
