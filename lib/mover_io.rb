@@ -26,7 +26,6 @@ module MoverIO
     end
 
     def find_connector(connector_id)
-      p "MoverAPI app_id=#{@app_id} app_secret=#{@app_secret}"
       response = RestClient.get "#{base_url}/connectors/#{connector_id}", {:authorization => "MoverAPI app_id=#{@app_id} app_secret=#{@app_secret}"}
       if response.code == 200
         JSON.parse response.to_str
