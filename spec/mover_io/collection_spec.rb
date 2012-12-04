@@ -15,13 +15,11 @@ module MoverIO
           "contents" => []
         })
 
-        connection.collections.root.should == Collection.new( connection, {
-          "id" => "ID2",
-          "name" => "/",
-          "writable" => true,
-          "parent_id" => "parent_id",
-          "contents" => []
-        })
+        root = connection.collections.root
+        root.id.should == "ID2"
+        root.name.should == "/"
+        root.should be_writable
+        root.parent_id.should == "parent_id"
       end
     end
 
@@ -35,13 +33,11 @@ module MoverIO
           "contents" => []
         })
 
-        connection.collections.find("ID2").should == Collection.new(connection, {
-          "id" => "ID2",
-          "name" => "/",
-          "writable" => true,
-          "parent_id" => "parent_id",
-          "contents" => []
-        })
+        collection = connection.collections.find("ID2")
+        collection.id.should == "ID2"
+        collection.name.should == "/"
+        collection.should be_writable
+        collection.parent_id.should == "parent_id"
       end
     end
 

@@ -33,31 +33,38 @@ module MoverIO
       session.get("/connectors/available")
     end
 
-    def all
-      res = session.get("/connectors")
-      if res
-        res["connectors"].map{|connector|
-          Connector.new(session, connector["id"], connector["type"])
-        }
-      else
-        []
-      end
+    def all(clear_cache = false)
+      reset_cache if clear_cache
+      @all ||= (
+        res = session.get("/connectors")
+        if res
+          res["connectors"].map{|connector|
+            Connector.new(session, connector["id"], connector["type"])
+          }
+        else
+          []
+        end
+      )
     end
 
     def new(type)
       Connector.new(session, nil, type)
     end
 
-    def find(id)
-      res = session.get("/connectors/#{connector_id}")
-      if res
-        Connector.new(session, res["id"], res["type"])
-      else
-        false
-      end
+    def find(id, clear_cache = false)
+      reset_cache if clear_cache
+      @find[id] ||= (
+        res = session.get("/connectors/#{connector_id}")
+        if res
+          Connector.new(session, res["id"], res["type"])
+        else
+          false
+        end
+      )
     end
 
     def create(type)
+      reset_cache
       connector = new(type)
       if connector.save
         connector
@@ -65,6 +72,14 @@ module MoverIO
         false
       end
     end
+
+    private
+
+    def reset_cache
+      @all = nil
+      @find = {}
+    end
+
   end
 
 end

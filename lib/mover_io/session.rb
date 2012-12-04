@@ -14,10 +14,6 @@ module MoverIO
       @protocol =  options.has_key?(:protocol) ? options[:protocol] : DEFAULT_PROTOCOL
     end
 
-    def connections
-      Connection.new(self)
-    end
-
     def get(path, params = {})
       rest_client(:get, path, params)
     end
@@ -38,7 +34,7 @@ module MoverIO
       ConnectorAssociation.new(self)
     end
 
-    def Transfers
+    def transfers
       TransferAssociation.new(self)
     end
 

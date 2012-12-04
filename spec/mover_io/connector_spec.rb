@@ -1,7 +1,7 @@
 require "spec_helper"
 
 module MoverIO
-  describe "ConnectorAssociation" do
+  describe Connector do
     let(:session) { Session.new({}) }
 
     describe "#all" do

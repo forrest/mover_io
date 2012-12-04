@@ -19,12 +19,13 @@ module MoverIO
       !id.nil?
     end
 
-    def ==(other)
-      other.connector == connector &&
-        other.id == id &&
-        other.name == name &&
-        other.writable == writable &&
-        other.parent_id == parent_id
+    def writable?
+      !!writable
+    end
+
+    def parent
+      return nil if parent_id.nil? or parent_id == ""
+      connector.find(parent_id)
     end
   end
 
@@ -37,8 +38,12 @@ module MoverIO
       parse_res connector.get("/collection/#{id}")
     end
 
-    def create
-      parse_res connector.post("/collections", {:name => name, :parent_id => collection_id})
+    def create(name, parent_id)
+      parse_res connector.post("/collections", {:name => name, :parent_id => parent_id})
+    end
+
+    def new(params = {})
+      parse_res(params)
     end
 
     private
