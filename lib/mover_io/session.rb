@@ -4,7 +4,7 @@ require 'json'
 module MoverIO
   class Session
     DEFAULT_HOST = 'api.mover.io'
-    DEFAULT_PROTOCOL = 'http://'
+    DEFAULT_PROTOCOL = 'https://'
 
     def initialize(options)
       @app_id = options[:app_id]
@@ -14,11 +14,11 @@ module MoverIO
       @protocol =  options.has_key?(:protocol) ? options[:protocol] : DEFAULT_PROTOCOL
     end
 
-    def get(path, params = {})
-      rest_client(:get, path, params)
+    def get(path)
+      rest_client(:get, path, {})
     end
 
-    def get(path, params = {})
+    def put(path, params = {})
       rest_client(:put, path, params)
     end
 
@@ -41,9 +41,11 @@ module MoverIO
     private
 
     def rest_client(method, path, params)
-      params.merge auth_hash
-      params.merge content_type_hash
-      res = self.class.rest_client_class.send(method, "#{base_url}#{path}", params.to_json)
+      args = [method, "#{base_url}#{path}"]
+      args << params.to_json unless method == :get
+      args << auth_hash.merge(content_type_hash)
+
+      res = self.class.rest_client_class.send(*args)
       if res.code >= 200 and res.code < 300
         JSON.parse res.to_str
       else
