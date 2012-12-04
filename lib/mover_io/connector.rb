@@ -59,8 +59,7 @@ module MoverIO
 
     def create(type)
       connector = new(type)
-      res = connector.save
-      if res
+      if connector.save
         connector
       else
         false
