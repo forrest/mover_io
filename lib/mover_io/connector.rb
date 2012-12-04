@@ -7,6 +7,7 @@ module MoverIO
     def save
       raise "Can't update an existing Connector" if new_record?
       res = session.post("/connectors", {'type' => type})
+      p res
       if res
         self.id = res["id"]
         true
@@ -15,8 +16,8 @@ module MoverIO
       end
     end
 
-    def get(path, params = {})
-      session.get("/connectors/#{id}#{path}", params)
+    def get(path)
+      session.get("/connectors/#{id}#{path}")
     end
 
     def post(path, params = {})
