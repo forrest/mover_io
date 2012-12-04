@@ -30,25 +30,20 @@ module MoverIO
 
   class CollectionAssociation < Struct.new(:connector)
     def root
-      res = connector.get("/collections")
-      if res
-        Collection.new(connector, res)
-      else
-        nil
-      end
+      parse_res connector.get("/collections")
     end
 
     def find(id)
-      res = connector.get("/collection/#{id}")
-      if res
-        Collection.new(connector, res)
-      else
-        nil
-      end
+      parse_res connector.get("/collection/#{id}")
     end
 
     def create
-      res = connector.post("/collections", {:name => name, :parent_id => collection_id})
+      parse_res connector.post("/collections", {:name => name, :parent_id => collection_id})
+    end
+
+    private
+
+    def parse_res(res)
       if res
         Collection.new(connector, res)
       else
