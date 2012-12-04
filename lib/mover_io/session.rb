@@ -31,11 +31,11 @@ module MoverIO
     end
 
     def connections
-      ConnectorAssociation.new(self)
+      @connections ||= ConnectorAssociation.new(self)
     end
 
     def transfers
-      TransferAssociation.new(self)
+      @transfers ||= TransferAssociation.new(self)
     end
 
     private
@@ -43,9 +43,7 @@ module MoverIO
     def rest_client(method, path, params)
       params.merge auth_hash
       params.merge content_type_hash
-      res = self.class.rest_client_class.send(method,
-                            "#{base_url}#{path}",
-                            params.to_json)
+      res = self.class.rest_client_class.send(method, "#{base_url}#{path}", params.to_json)
       if res.code >= 200 and res.code < 300
         JSON.parse res.to_str
       else

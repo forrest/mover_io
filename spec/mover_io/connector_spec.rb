@@ -26,6 +26,13 @@ module MoverIO
           Connector.new(session, "SD96aHgoEagas397ftb", "SugarSync")
         ]
       end
+
+      it "should cache" do
+        session.expects(:get).twice.returns({"connectors" => []})
+        session.connections.all
+        session.connections.all # this should be a cached call
+        session.connections.all(true)
+      end
     end
 
     describe "#new" do
@@ -39,6 +46,9 @@ module MoverIO
         connector.id.should == "Has397ftbwA96aHgoEa"
         connector.type.should == "Dropbox"
       end
+    end
+
+    describe "#find" do
     end
 
   end
