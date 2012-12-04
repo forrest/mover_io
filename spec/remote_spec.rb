@@ -2,13 +2,20 @@ require "spec_helper"
 
 describe "Run tests against actual API" do
 
+  def session
+    @session ||= (
+      mover_app_id = CONFIG['mover_api_id']
+      mover_app_secret = CONFIG['mover_api_secret']
+      MoverIO::Session.new(:app_id => mover_app_id, :app_secret => mover_app_secret)
+    )
+  end
 
-  describe "checking all connections" do
-    mover_app_id = ENV['MOVER_API_ID'] || "9adkJ9EGmMop3XjBJeNjWJBeMijQkQGq"
-    mover_app_secret = ENV['MOVER_API_SECRET'] || "Q9Ow8a9IYQqDJIU9SYi1zO4aWcOv2B05"
-    session = MoverIO::Session.new(:app_id => mover_app_id, :app_secret => mover_app_secret)
-
+  it "should fetch all connections" do
     session.connections.all
+  end
+
+  it "should find a known connector" do
+    session.connections.find(CONFIG[:known_connector_id])
   end
 
 end

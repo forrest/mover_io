@@ -1,0 +1,7 @@
+# To run the remote_spec.rb file
+# Copy this file to config.yml and fill in with your account data.
+
+test:
+  mover_api_id: fake_id
+  mover_api_secret: fake_secret
+  known_connector_id: fake_connector_id

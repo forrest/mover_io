@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in mover_io.gemspec
 gemspec
 
+gem "pry"
 gem "pry-doc"
 gem "rspec"
 gem "guard"

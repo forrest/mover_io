@@ -53,8 +53,9 @@ module MoverIO
 
     def find(id, clear_cache = false)
       reset_cache if clear_cache
+      @find ||= {}
       @find[id] ||= (
-        res = session.get("/connectors/#{connector_id}")
+        res = session.get("/connectors/#{id}")
         if res
           Connector.new(session, res["id"], res["type"])
         else
